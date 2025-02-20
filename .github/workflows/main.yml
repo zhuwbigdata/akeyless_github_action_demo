@@ -21,7 +21,7 @@ jobs:
         static-secrets: |
           - name: "/devops/static_secret_encrypted_by_master"
             output-name: "my_static_secret"
-        api-url: "https://gw.wz.cs.akeyless.fans/api/v2/"
+        api-url: "https://api.akeyless.io"
    
     - name: Use Akeyless secret (environment variable)
       env:
