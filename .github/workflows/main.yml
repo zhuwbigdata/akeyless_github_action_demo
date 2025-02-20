@@ -10,7 +10,38 @@ jobs:
       contents: read
     steps:
 
+    - name: Fetch dynamic secrets from Akeyless
+      uses: akeyless-community/akeyless-github-action@v1.0.1
+      id: fetch-dynamic-secrets
+      with:
+          access-id: '${{ secrets.ACCESS_ID }}'
+          dynamic-secrets: |
+            - name: "/devops/postgres_dynamic_secret"
+              output-name: "postgres_dynamic_secret"
+          access-type: jwt
+          export-secrets-to-outputs: true
+          export-secrets-to-environment: true
+          api-url: "https://api.akeyless.io"
+
+    - name: Export Secrets to Environment
+      run: |
+          echo '${{ steps.fetch-dynamic-secrets.outputs.postgres_dynamic_secret
+          }}' | jq -r
+          'to_entries|map("POSTGRES_\(.key|ascii_upcase)=\(.value|tostring)")|.[]'
+          >> $GITHUB_ENV
+          
+    - name: Verify Vars
+      run: |
+          echo "host: ${{ env.POSTGRES_HOST }}" >> secrets.txt
+          echo "port: ${{ env.POSTGRES_PORT }}" >> secrets.txt
+          echo "username: ${{ env.POSTGRES_USER }}" >> secrets.txt
+          echo "password: ${{ env.POSTGRES_PASSWORD }}" >> secrets.txt
+          echo "db_name: ${{ env.POSTGRES_DB_NAME }}" >> secrets.txt
+          echo "ttl_in_minutes: ${{ env.POSTGRES_TTL_IN_MINUTES }}" >>
+          secrets.txt           
+
     - name: Fetch static secrets from Akeyless
+      if: false
       uses: akeyless-community/akeyless-github-action@v1.0.1
       id: fetch-secrets
       with:
@@ -24,6 +55,7 @@ jobs:
         api-url: "https://api.akeyless.io"
    
     - name: Use Akeyless secret (environment variable)
+      if: false
       env:
         SECRET: ${{ env.my_static_secret}}
       run: |
@@ -31,6 +63,7 @@ jobs:
         echo "Doing something with $SECRET"
      
     - name: Use Akeyless secret (step output)
+      if: false
       run: |
         # Use the secret securely within this step
         echo "Doing something with ${{ steps.fetch-secrets.outputs.my_static_secret }}"
