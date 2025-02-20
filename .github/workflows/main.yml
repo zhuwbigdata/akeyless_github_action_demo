@@ -1,0 +1,36 @@
+name: Fetch Static Secrets example
+
+'on': push
+
+jobs:
+  fetch_secrets:
+    runs-on: self-hosted
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+
+    - name: Fetch static secrets from Akeyless
+      uses: akeyless-community/akeyless-github-action@v1.0.1
+      id: fetch-secrets
+      with:
+        access-id: '${{ secrets.ACCESS_ID }}'
+        access-type: jwt
+        export-secrets-to-outputs: true
+        export-secrets-to-environment: true
+        static-secrets: |
+          - name: "/devops/static_secret_encrypted_by_master"
+            output-name: "my_static_secret"
+        api-url: "https://csm.thalescryptolabs.com/akeyless-api/v2/"
+   
+    - name: Use Akeyless secret (environment variable)
+      env:
+        SECRET: ${{ env.my_static_secret}}
+      run: |
+        # Use the secret securely within this step
+        echo "Doing something with $SECRET"
+     
+    - name: Use Akeyless secret (step output)
+      run: |
+        # Use the secret securely within this step
+        echo "Doing something with ${{ steps.fetch-secrets.outputs.my_static_secret }}"
