@@ -37,8 +37,7 @@ jobs:
           echo "username: ${{ env.POSTGRES_USER }}" >> secrets.txt
           echo "password: ${{ env.POSTGRES_PASSWORD }}" >> secrets.txt
           echo "db_name: ${{ env.POSTGRES_DB_NAME }}" >> secrets.txt
-          echo "ttl_in_minutes: ${{ env.POSTGRES_TTL_IN_MINUTES }}" >>
-          secrets.txt           
+          echo "ttl_in_minutes: ${{ env.POSTGRES_TTL_IN_MINUTES }}" >> secrets.txt           
 
     - name: Fetch static secrets from Akeyless
       if: false
