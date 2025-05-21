@@ -2,3 +2,4 @@
 Github action to access Akeyless 
 
 Trigger
+Trigger2
