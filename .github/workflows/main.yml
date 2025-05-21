@@ -16,7 +16,7 @@ jobs:
       with:
           access-id: '${{ secrets.ACCESS_ID }}'
           dynamic-secrets: |
-            - name: "/devops/postgres_dynamic_secret"
+            - name: "/devops/database/postgres"
               output-name: "postgres_dynamic_secret"
           access-type: jwt
           export-secrets-to-outputs: true
