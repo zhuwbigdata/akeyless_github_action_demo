@@ -21,8 +21,8 @@ jobs:
           access-type: jwt
           export-secrets-to-outputs: true
           export-secrets-to-environment: true
-          #api-url: "https://gw.wz.cs.akeyless.fans"
-          api-url: "https://api.akeyless.io"
+          api-url: "https://gw-gke.wz.cs.akeyless.fans/api/v2"
+          #api-url: "https://api.akeyless.io"
 
     - name: Export Secrets to Environment
       run: |
