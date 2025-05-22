@@ -3,6 +3,28 @@ name: Fetch Static Secrets example
 'on': push
 
 jobs:
+  show-oidc-claims:
+    runs-on: ubuntu-latest
+
+    permissions:
+      id-token: write  # Required to request the OIDC token
+      contents: read
+
+    steps:
+      - name: Request GitHub OIDC Token
+        id: get_token
+        run: |
+          echo "🔐 Requesting OIDC token from GitHub..."
+          TOKEN_JSON=$(curl -s -H "Authorization: Bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" "$ACTIONS_ID_TOKEN_REQUEST_URL")
+          echo "$TOKEN_JSON" | jq .
+          echo "::set-output name=raw_token::$(echo "$TOKEN_JSON" | jq -r .value)"
+
+      - name: Decode and Print JWT Claims
+        run: |
+          TOKEN="${{ steps.get_token.outputs.raw_token }}"
+          echo "🔐 Decoding JWT..."
+          echo "$TOKEN" | cut -d '.' -f2 | base64 -d | jq .
+
   fetch_secrets:
     runs-on: self-hosted
     permissions:
