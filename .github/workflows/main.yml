@@ -4,8 +4,8 @@ name: Fetch Static Secrets example
 
 jobs:
   show-oidc-claims:
-    #runs-on: ubuntu-latest
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
+    #runs-on: self-hosted
 
     permissions:
       id-token: write  # Required to request the OIDC token
