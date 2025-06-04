@@ -1,6 +1,16 @@
 name: Fetch Static Secrets example
 
-'on': push
+#'on': push
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: 'Reason for running this workflow'
+        required: false
+        default: 'Manual trigger'
 
 jobs:
   show-oidc-claims:
