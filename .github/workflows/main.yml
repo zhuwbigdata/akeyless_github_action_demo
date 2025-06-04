@@ -53,14 +53,14 @@ jobs:
             - name: "/devops/database/postgres"
               output-name: "postgres_dynamic_secret"
           access-type: jwt
-          export-secrets-to-outputs: true
-          export-secrets-to-environment: true
+          #export-secrets-to-outputs: true
+          #export-secrets-to-environment: true
           api-url: "https://gw-gke.wz.cs.akeyless.fans/api/v2"
           #api-url: "https://api.akeyless.io"
 
-    #- name: Export Secrets to Environment
-    #  run: |
-    #      echo '${{ steps.fetch-dynamic-secrets.outputs.postgres_dynamic_secret }}' | jq -r 'to_entries | map("POSTGRES_\(.key|ascii_upcase)=\(.value|tostring)") | .[]' >> $GITHUB_ENV
+    - name: Export Secrets to Environment
+      run: |
+          echo '${{ steps.fetch-dynamic-secrets.outputs.postgres_dynamic_secret }}' | jq -r 'to_entries | map("POSTGRES_\(.key|ascii_upcase)=\(.value|tostring)") | .[]' >> $GITHUB_ENV
          
           
           
