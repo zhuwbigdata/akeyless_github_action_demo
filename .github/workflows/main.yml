@@ -30,7 +30,7 @@ jobs:
           echo "$TOKEN_JSON" | jq .
           echo "::set-output name=raw_token::$(echo "$TOKEN_JSON" | jq -r .value)"
 
-      - name: Decode and Print JWT Claims
+      - name: Reconstruct JWT and Save to File
         run: |
           TOKEN="${{ steps.get_token.outputs.raw_token }}"
       
@@ -38,10 +38,21 @@ jobs:
           PART2=$(echo "$TOKEN" | cut -d '.' -f2)
           PART3=$(echo "$TOKEN" | cut -d '.' -f3)
       
-         
-          echo ""
-          echo "🔁 Reconstructed:"
-          echo "${PART1}.${PART2}.${PART3}"
+          RECONSTRUCTED="${PART1}.${PART2}.${PART3}"
+      
+          echo "🔁 Reconstructed JWT (marked):"
+          echo "[BEGIN JWT]"
+          echo "$RECONSTRUCTED"
+          echo "[END JWT]"
+      
+          # Save to file
+          echo "$RECONSTRUCTED" > jwt.txt
+
+      - name: Upload JWT as Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: github-jwt-token
+          path: jwt.txt
 
 
       - name: Decode and Print JWT Claims
