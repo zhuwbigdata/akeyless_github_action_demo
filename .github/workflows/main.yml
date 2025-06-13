@@ -38,20 +38,9 @@ jobs:
           PART2=$(echo "$TOKEN" | cut -d '.' -f2)
           PART3=$(echo "$TOKEN" | cut -d '.' -f3)
       
+         
           echo ""
-          echo "🔷 JWT Part 1 (Header - Decoded):"
-          echo "$PART1" | base64 -d | jq .
-      
-          echo ""
-          echo "🔷 JWT Part 2 (Payload - Decoded):"
-          echo "$PART2" | base64 -d | jq .
-      
-          echo ""
-          echo "🔷 JWT Part 3 (Signature - Encoded):"
-          echo "$PART3"
-
-          echo ""
-          echo "🔁 Reconstructed JWT:"
+          echo "🔁 Reconstructed:"
           echo "${PART1}.${PART2}.${PART3}"
 
 
