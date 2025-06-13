@@ -36,6 +36,7 @@ jobs:
           echo "JWT part1:"
           echo "$TOKEN" | cut -d '.' -f1 | base64 -d
           echo "${TOKEN:0:200}"
+          echo "$TOKEN" | cut -d '.' -f1
           echo "JWT part2:"
           echo "$TOKEN" | cut -d '.' -f2 
           echo "JWT part3:"
