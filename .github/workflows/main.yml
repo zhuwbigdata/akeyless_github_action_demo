@@ -33,14 +33,18 @@ jobs:
       - name: Decode and Print JWT Claims
         run: |
           TOKEN="${{ steps.get_token.outputs.raw_token }}"
+          echo ""
           echo "JWT part1:"
-          echo "$TOKEN" | cut -d '.' -f1 | base64 -d
-          echo "${TOKEN:0:200}"
-          echo "$TOKEN" | cut -d '.' -f1
+          echo "$TOKEN" | cut -d '.' -f1 | base64 -d | base64
+          #echo "${TOKEN:0:200}"
+          #echo "$TOKEN" | cut -d '.' -f1
+          echo ""
           echo "JWT part2:"
           echo "$TOKEN" | cut -d '.' -f2 
+          echo ""
           echo "JWT part3:"
           echo "$TOKEN" | cut -d '.' -f3
+          echo ""
           echo "🔐 Decoding JWT..."
           echo "$TOKEN" | cut -d '.' -f2 | base64 -d | jq .
         
