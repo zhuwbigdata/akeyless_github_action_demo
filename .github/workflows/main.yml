@@ -34,7 +34,7 @@ jobs:
         run: |
           TOKEN="${{ steps.get_token.outputs.raw_token }}"
           echo "JWT part1:"
-          echo "$TOKEN" | cut -d '.' -f1
+          echo "$TOKEN" | cut -d '.' -f1 | base64 -d
           echo "JWT part2:"
           echo "$TOKEN" | cut -d '.' -f2 
           echo "🔐 Decoding JWT..."
